@@ -1,0 +1,126 @@
+<!doctype html>
+<!-- The code is based on the practicals in week 3, 4, 6 and 7, the link is:  file://ad.ucl.ac.uk/home1/uczlfr1/DesktopSettings/Desktop/Web%20GIS/Week%203%20and%204/Practical%20%20-%20Material%20Design%20and%20Other%20Concepts.pdf 
+file://ad.ucl.ac.uk/home1/uczlfr1/DesktopSettings/Desktop/Web%20GIS/Week%206%20and%207/week6server/Practical%20%20-%20Saving%20Data%20to%20the%20Server.pdf -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Material Design Lite</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+    <link rel="shortcut icon" href="images/favicon.png">
+
+	<!-- font and design -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css">
+    <link rel="stylesheet" href="styles.css">
+	
+    <style>
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+    </style>
+	
+	<!-- the following links add the CSS and Javascript required for the Leaflet Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css"
+    integrity="sha512-
+    wcw6ts8Anuw10Mzh9Ytw4pylW8+NAD4ch3lqm9lzAsTxg0GFeJgoAtxuCLREZSC5lUXdVyo/7yfsqFjQ4S+aKw=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js"
+    integrity="sha512-
+    mNqn2Wg7tSToJhvHcqfzLMU6J4mkOImSPTxVZAdo+lcPlk+GhZmYgACEe0x35K7YzW1zJ7XyJV/TT1MrdXvMcA=="crossorigin=""></script>
+    <!-- the following links incorporate the CSS required for custom icon creation -->
+    <link rel="stylesheet" href=" ionicons.min.css">
+    <link rel="stylesheet" href="leaflet.awesome-markers.css">
+    <script src="leaflet.awesome-markers.js"></script>
+    <!-- the following CSS is used to set the size of the Map -->
+    <style type="text/css">
+    #mapid { height: 800px; }
+    </style>
+  </head>
+  
+  
+  
+  <body>
+
+    <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+      <!-- create the home menu and design its color and format -->	
+	  <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title">Home-Menu</span>
+          <div class="mdl-layout-spacer"></div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+            <div class="mdl-textfield__expandable-holder">
+              <input class="mdl-textfield__input" type="text" id="search">
+              <label class="mdl-textfield__label" for="search">Enter your query...</label>
+            </div>
+          </div>
+        </div>
+      </header>
+	  
+      <div class="demo-drawer mdl-layout__drawer mdl-color--grey-900 mdl-color-text--blue-grey-50">
+        <!-- add ucl logo and module code to the sidebar -->
+		<header class="demo-drawer-header">
+          <img src="images/ucl.png" class="demo-drawer">
+          <div class="demo-avatar-dropdown">
+            <span>CEGEG077</span>
+            <div class="mdl-layout-spacer"></div>
+          </div>
+        </header>
+		<!-- add question, answers, the right answer, latitude and longitude label to the sidebar -->
+        <nav class="demo-navigation mdl-navigation mdl-color--blue-300">
+          <label for="question">Question</label>  <p> <input type="text" size="28" id="question"/> <br /> </p>
+          <label for="answer1">Answer1</label>    <p> <input type="text" size="28" id="answer1"/><br /> </p>
+          <label for="answer2">Answer2</label>    <p> <input type="text" size="28" id="answer2"/><br /> </p>
+		  <label for="answer3">Answer3</label>    <p> <input type="text" size="28" id="answer3"/><br /> </p>
+          <label for="answer4">Answer4</label>    <p> <input type="text" size="28" id="answer4"/><br /> </p>
+		  <label for="rightanswer">RightAnswer</label>   <p> <input type="text" size="28" id="rightanswer"/><br /> </p>
+          <label for="longitude">Logitude</label>        <p> <input type="text" size="28" id="longitude"/><br /> </p>
+          <label for="latitude">Latitude</label>         <p> <input type="text" size="28" id="latitude"/><br /> </p>
+		  <!-- Add a button to upload data which is inut to database -->
+		  <br />
+          <p> <button id="startUpload" onclick="startDataUpload()">Start Data Upload</button> </p>
+		  <!-- Add a DIV to show the results of any upload process -->
+          <br />
+          <p> <div id="dataUploadResult">The result of the upload goes here</div> </p>
+        </nav>
+      </div>
+      <main class="mdl-layout__content mdl-color--grey-100">
+        <div class="mdl-grid demo-content">
+          <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">	  
+          <!-- the mapid div will hold the map -->
+          <div id="mapid" style="width: 1200px; height: 800px;"></div>				  
+          </div>
+        </div>
+      </main>
+    </div>
+	
+    <!-- add the reference -->  
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+	<!-- Make the code cleaner – move the Javascript into a separate uploadData.js file, call functions from uploadData.js -->
+	<script src="./js/uploadData.js"> </script>
+
+  </body>
+</html>
+
